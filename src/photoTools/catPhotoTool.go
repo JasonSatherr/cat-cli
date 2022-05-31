@@ -1,7 +1,6 @@
 package photoTools
 
 import (
-	"errors"
 	"fmt"
 	"image"
 	"os"
@@ -18,7 +17,7 @@ func (cpt CatPhotoTool) GenerateImage() (image.Image, error) {
 	if err != nil {
 		//Bad because we do not unpack the err (*PathError)
 		//which contains more information
-		return nil, errors.New("COULD NOT FIND IMAGE")
+		return nil, err
 	}
 
 	defer existingImageFile.Close()
@@ -29,7 +28,7 @@ func (cpt CatPhotoTool) GenerateImage() (image.Image, error) {
 
 	if err != nil {
 		// most likely more we can decode... maybe just pass err back instead of error?
-		return nil, errors.New("COULD NOT DECODE IMAGE")
+		return nil, err
 	}
 
 	// fmt.Println(imageData)
