@@ -3,12 +3,10 @@ package main
 import (
 	"fmt"
 
-	"cat-cli/src/photoTools"
-
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/canvas"
-	//"github.com/JasonSatherr/cat-cli/src/photoTools"
+	"github.com/JasonSatherr/cat-cli/src/photoTools"
 )
 
 func main() {
@@ -20,7 +18,7 @@ func main() {
 	catGenerator := photoTools.CatPhotoTool{}
 	a := app.New()
 	w := a.NewWindow("Images")
-	img, err := catGenerator.generateImage()
+	img, err := catGenerator.GenerateImage()
 	img = canvas.NewImageFromImage(img) //generate image is an image.Image to be rendered...
 	w.SetContent(img)
 	w.Resize(fyne.NewSize(640, 480))
