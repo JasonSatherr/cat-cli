@@ -17,6 +17,7 @@ func main() {
 	// fmt.Printf("\ntu's number %f", math.Abs(Tu))
 
 	catGenerator := photoTools.CatPhotoTool{}
+	fmt.Print(catGenerator)
 	a := app.New()
 	w := a.NewWindow("Images")
 	img, err := catGenerator.GenerateImage()

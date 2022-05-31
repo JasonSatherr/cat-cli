@@ -25,15 +25,15 @@ func (cpt CatPhotoTool) GenerateImage() (image.Image, error) {
 
 	// Calling the generic image.Decode() will tell give us the data
 	// and type of image it is as a string. We expect "jpg"
-	imageData, imageType, err := image.Decode(existingImageFile)
+	imageData, _, err := image.Decode(existingImageFile)
 
 	if err != nil {
 		// most likely more we can decode... maybe just pass err back instead of error?
 		return nil, errors.New("COULD NOT DECODE IMAGE")
 	}
 
-	fmt.Println(imageData)
-	fmt.Println(imageType)
+	// fmt.Println(imageData)
+	// fmt.Println(imageType)
 	return imageData, nil
 }
 
