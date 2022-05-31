@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
@@ -19,9 +20,13 @@ func main() {
 	a := app.New()
 	w := a.NewWindow("Images")
 	img, err := catGenerator.GenerateImage()
-	img = canvas.NewImageFromImage(img) //generate image is an image.Image to be rendered...
-	w.SetContent(img)
-	w.Resize(fyne.NewSize(640, 480))
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	displayableImage := canvas.NewImageFromImage(img) //generate image is an image.Image to be rendered...
+	w.SetContent(displayableImage)                    //prepare to display image
+	w.Resize(fyne.NewSize(640, 480))                  //set size of image
 
-	w.ShowAndRun()
+	w.ShowAndRun() //show image
 }
