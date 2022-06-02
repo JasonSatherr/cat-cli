@@ -1,0 +1,8 @@
+author: Jason Sather <https://jasonsatherr.github.io/2020BobaTeaTierList/>
+year: 2022
+license:
+  header: This license is given only to the sauciest CLI apps
+  text: |
+    {{ .copyright }}
+
+    Chimera Shadow Garden!

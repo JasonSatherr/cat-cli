@@ -1,4 +1,4 @@
-package main
+package src
 
 import (
 	"fmt"
@@ -10,7 +10,7 @@ import (
 	"github.com/JasonSatherr/cat-cli/src/photoTools"
 )
 
-func main() {
+func DisplayRandImage() {
 	fmt.Printf("wheeeheee %d", 10)
 	// var Tu float64
 	// Tu = -5
