@@ -48,26 +48,28 @@ func (cpt CatPhotoTool) GenerateImage() (image.Image, error) {
 func (cpt CatPhotoTool) getImgURL() (string, error) {
 	response, _ := http.Get("https://api.thecatapi.com/v1/images/search") //later query specifically for the url??
 	body := response.Body
-	bodyBytes := make([]byte, 0)
+	bodyBytes := make([]byte, 0) //The slices to hold all of the body once we buffer it in
 	bodyByteBufferSize := 1024
-	bodyByteBuffer := make([]byte, bodyByteBufferSize)
+	bodyByteBuffer := make([]byte, bodyByteBufferSize) //the buffer to slowly consume the response body
 	var numRead int = bodyByteBufferSize
 
-	for numRead != 0 {
+	for numRead != 0 { //while there is still data to read...
 		read, err := body.Read(bodyByteBuffer)
 		numRead = read
 		//process duh data
-		bodyBytes = append(bodyBytes, bodyByteBuffer[:numRead]...)
-		fmt.Print((bodyBytes))
-		if err != nil {
+		bodyBytes = append(bodyBytes, bodyByteBuffer[:numRead]...) //bodybytes += bodybytes += buffer
+
+		if err != nil { //print the errors we run into... EOF is largely expected, but others may be present
 			fmt.Print(err)
 		}
 	}
-	fmt.Printf("LEN BODY BYTES = %d", len(bodyBytes))
-	var jsonData []interface{}
-	json.Unmarshal(bodyBytes, &jsonData)
-	fmt.Printf("LEN BODY BYTES = %d", len(bodyBytes))
 
+	var jsonData []interface{}
+
+	//get data out of bytes arr and parse it to the form of an array of interfaces
+	json.Unmarshal(bodyBytes, &jsonData)
+
+	//because we know the form of the json, we are able to get the image url out of it :)
 	if mapData, ok := jsonData[0].(map[string]interface{}); ok {
 		fmt.Print(mapData["url"])
 		if stringToReturn, ok := mapData["url"].(string); ok {
