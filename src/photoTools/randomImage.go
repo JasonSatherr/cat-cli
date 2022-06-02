@@ -1,6 +1,9 @@
 package photoTools
 
-type RandomPhotoTool interface {
+type RandomPhotoToolInterface interface {
 	GenerateImage()
 	GetExtraMessage()
+}
+
+type RandomPhotoTool struct {
 }

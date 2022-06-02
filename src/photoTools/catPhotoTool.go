@@ -1,6 +1,8 @@
 package photoTools
 
 import (
+	"encoding/json"
+	"errors"
 	"fmt"
 	"image"
 	"net/http"
@@ -8,13 +10,18 @@ import (
 
 type CatPhotoTool struct {
 	//sound string
+	RandomPhotoTool
 }
 
 //just move some of this logic out to something that all the classes of the interface can share?
 func (cpt CatPhotoTool) GenerateImage() (image.Image, error) {
 	fmt.Printf("\n getting an image \n")
 	//existingImageFile, err := os.Open("./pics/cat.jpg") //get the cat pic
-	existingImageFile, err := http.Get("https://cdn2.thecatapi.com/images/9fm.jpg")
+	randomCatPicURL, err := cpt.getImgURL()
+	if err != nil {
+		return nil, nil
+	}
+	existingImageFile, err := http.Get(randomCatPicURL)
 	//https://cdn2.thecatapi.com/images/9fm.jpg
 	if err != nil {
 		//Bad because we do not unpack the err (*PathError)
@@ -38,7 +45,38 @@ func (cpt CatPhotoTool) GenerateImage() (image.Image, error) {
 	return imageData, nil
 }
 
+func (cpt CatPhotoTool) getImgURL() (string, error) {
+	response, _ := http.Get("https://api.thecatapi.com/v1/images/search") //later query specifically for the url??
+	body := response.Body
+	bodyBytes := make([]byte, 0)
+	bodyByteBufferSize := 1024
+	bodyByteBuffer := make([]byte, bodyByteBufferSize)
+	var numRead int = bodyByteBufferSize
+
+	for numRead != 0 {
+		read, err := body.Read(bodyByteBuffer)
+		numRead = read
+		//process duh data
+		bodyBytes = append(bodyBytes, bodyByteBuffer[:numRead]...)
+		fmt.Print((bodyBytes))
+		if err != nil {
+			fmt.Print(err)
+		}
+	}
+	fmt.Printf("LEN BODY BYTES = %d", len(bodyBytes))
+	var jsonData []interface{}
+	json.Unmarshal(bodyBytes, &jsonData)
+	fmt.Printf("LEN BODY BYTES = %d", len(bodyBytes))
+
+	if mapData, ok := jsonData[0].(map[string]interface{}); ok {
+		fmt.Print(mapData["url"])
+		if stringToReturn, ok := mapData["url"].(string); ok {
+			return stringToReturn, nil
+		}
+	}
+	return "ERROR", errors.New("failed to get the image url :(")
+}
+
 func (cpt CatPhotoTool) GetExtraMessage() string {
 	return "meowww"
-	//return cpt.sound
 }
