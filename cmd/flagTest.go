@@ -12,13 +12,13 @@ import (
 )
 
 // displayCmd represents the display command
-var displayCmd = &cobra.Command{
-	Use:   "display",
-	Short: "displays an image randomly fetched from the internet",
-	Long: `This command will query the internet for a random picture.
-	atm, you need to close the image before you can move on`,
+var flagTestCmd = &cobra.Command{
+	Use:   "flagTest",
+	Short: "a silly command so that developers can sandbox with flags",
+	Long: `This developer is a bonehead so they really need a way to test things
+	at a small scale before trying to do anything real with it`,
 	Run: func(cmd *cobra.Command, args []string) {
-		src.DisplayRandImage()
+		fmt.Printf("flag testing");
 	},
 }
 

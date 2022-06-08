@@ -12,13 +12,13 @@ import (
 )
 
 // displayCmd represents the display command
-var displayCmd = &cobra.Command{
-	Use:   "display",
-	Short: "displays an image randomly fetched from the internet",
+var downloadCmd = &cobra.Command{
+	Use:   "download",
+	Short: "downloads an image randomly fetched from the internet",
 	Long: `This command will query the internet for a random picture.
-	atm, you need to close the image before you can move on`,
+	and then by default download it into the current directory`,
 	Run: func(cmd *cobra.Command, args []string) {
-		src.DisplayRandImage()
+		fmt.Printf("Sorry, Jason has not yet implemented the download feature");
 	},
 }
 
