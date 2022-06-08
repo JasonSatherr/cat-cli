@@ -15,7 +15,6 @@ type CatPhotoTool struct {
 
 //just move some of this logic out to something that all the classes of the interface can share?
 func (cpt CatPhotoTool) GenerateImage() (image.Image, error) {
-	fmt.Printf("\n getting an image \n")
 	//existingImageFile, err := os.Open("./pics/cat.jpg") //get the cat pic
 	randomCatPicURL, err := cpt.getImgURL()
 	if err != nil {
@@ -71,7 +70,6 @@ func (cpt CatPhotoTool) getImgURL() (string, error) {
 
 	//because we know the form of the json, we are able to get the image url out of it :)
 	if mapData, ok := jsonData[0].(map[string]interface{}); ok {
-		fmt.Print(mapData["url"])
 		if stringToReturn, ok := mapData["url"].(string); ok {
 			return stringToReturn, nil
 		}
