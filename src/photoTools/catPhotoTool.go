@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"image"
 	"net/http"
+	"os"
+	"path/filepath"
 )
 
 type CatPhotoTool struct {
@@ -45,7 +47,10 @@ func (cpt CatPhotoTool) GenerateImage() (image.Image, error) {
 }
 
 func (cpt CatPhotoTool) getImgURL() (string, error) {
-	response, _ := http.Get("https://api.thecatapi.com/v1/images/search") //later query specifically for the url??
+
+	cpt.getKey()
+	url := "https://api.thecatapi.com/v1/images/search?mime_types=jpg,png"
+	response, _ := http.Get(url) //later query specifically for the url??
 	body := response.Body
 	bodyBytes := make([]byte, 0) //The slices to hold all of the body once we buffer it in
 	bodyByteBufferSize := 1024
@@ -77,6 +82,20 @@ func (cpt CatPhotoTool) getImgURL() (string, error) {
 	return "ERROR", errors.New("failed to get the image url :(")
 }
 
+func (cpt CatPhotoTool) getKey() {
+	exPath := cpt.getExPath()
+	configFileName := exPath + "\\configuration\\secret_config.json"
+	//^^IMPORTANT MAKE SURE THAT IT WORKS ON LINUX/MAC TOO NOT JUST WINDOWS
+	//^^THIS WAY OF CONCATING TO FILE PATH IS BAD BC OS USE DIFFERENT SYMBOLS TO SEPARATE
+}
+func (cpt CatPhotoTool) getExPath() string {
+	ex, err := os.Executable()
+	if err != nil {
+		panic(err)
+	}
+	exPath := filepath.Dir(ex)
+	return exPath
+}
 func (cpt CatPhotoTool) GetExtraMessage() string {
 	return "meowww"
 }

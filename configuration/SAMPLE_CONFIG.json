@@ -1,0 +1,5 @@
+{
+    "keys": {
+        "cat-api" : "PUT KEYS HERE AND THEN RENAME FILE TO secret_config.json"
+    }
+}
