@@ -7,7 +7,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/JasonSatherr/cat-cli/src"
+	//"github.com/JasonSatherr/cat-cli/src"
 	"github.com/spf13/cobra"
 )
 
@@ -18,12 +18,12 @@ var downloadCmd = &cobra.Command{
 	Long: `This command will query the internet for a random picture.
 	and then by default download it into the current directory`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("Sorry, Jason has not yet implemented the download feature");
+		fmt.Printf("Sorry, Jason has not yet implemented the download feature")
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(displayCmd)
+	rootCmd.AddCommand(downloadCmd)
 
 	// Here you will define your flags and configuration settings.
 

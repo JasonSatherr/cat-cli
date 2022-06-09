@@ -7,23 +7,26 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/JasonSatherr/cat-cli/src"
 	"github.com/spf13/cobra"
 )
 
+var (
+	name string = "user"
+)
+
 // displayCmd represents the display command
-var flagTestCmd = &cobra.Command{
-	Use:   "flagTest",
+var greetCmd = &cobra.Command{
+	Use:   "greet",
 	Short: "a silly command so that developers can sandbox with flags",
 	Long: `This developer is a bonehead so they really need a way to test things
 	at a small scale before trying to do anything real with it`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("flag testing");
+		fmt.Printf("HELLO %s!!", name)
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(displayCmd)
+	rootCmd.AddCommand(greetCmd)
 
 	// Here you will define your flags and configuration settings.
 
@@ -33,5 +36,5 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// displayCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	//greetCmd.Flags().StringVarP(&name, "name", "n", "user", "desires the name of the user")
 }

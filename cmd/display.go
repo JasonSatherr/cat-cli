@@ -5,7 +5,7 @@ Copyright © 2022 Jason Sather
 package cmd
 
 import (
-	"fmt"
+	//"fmt"
 
 	"github.com/JasonSatherr/cat-cli/src"
 	"github.com/spf13/cobra"
