@@ -36,5 +36,5 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	//greetCmd.Flags().StringVarP(&name, "name", "n", "user", "desires the name of the user")
+	greetCmd.Flags().StringVarP(&name, "name", "n", "user", "desires the name of the user")
 }
