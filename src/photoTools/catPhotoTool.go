@@ -87,6 +87,13 @@ func (cpt CatPhotoTool) getKey() {
 	configFileName := exPath + "\\configuration\\secret_config.json"
 	//^^IMPORTANT MAKE SURE THAT IT WORKS ON LINUX/MAC TOO NOT JUST WINDOWS
 	//^^THIS WAY OF CONCATING TO FILE PATH IS BAD BC OS USE DIFFERENT SYMBOLS TO SEPARATE
+
+	jsonFile, err := os.Open(configFileName)
+
+	if err != nil {
+		panic(err)
+	}
+
 }
 func (cpt CatPhotoTool) getExPath() string {
 	ex, err := os.Executable()
