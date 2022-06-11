@@ -26,7 +26,7 @@ func imageGrabberHandler(breedId int, animalId string, url string) image.Image {
 	var err error
 	if animalId == "cat" {
 		catGenerator := photoTools.CatPhotoTool{}
-		img, err = catGenerator.GenerateImage()
+		img, err = catGenerator.GenerateImageFromUrlEndpoint(url)
 
 	}
 

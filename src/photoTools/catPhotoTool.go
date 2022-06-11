@@ -17,9 +17,9 @@ type CatPhotoTool struct {
 }
 
 //just move some of this logic out to something that all the classes of the interface can share?
-func (cpt CatPhotoTool) GenerateImage() (image.Image, error) {
+func (cpt CatPhotoTool) GenerateImageFromUrlEndpoint(url string) (image.Image, error) {
 	//existingImageFile, err := os.Open("./pics/cat.jpg") //get the cat pic
-	randomCatPicURL, err := cpt.getImgURL()
+	randomCatPicURL, err := cpt.getImgURL(url)
 	if err != nil {
 		return nil, nil
 	}
@@ -47,10 +47,21 @@ func (cpt CatPhotoTool) GenerateImage() (image.Image, error) {
 	return imageData, nil
 }
 
-func (cpt CatPhotoTool) getImgURL() (string, error) {
+func (cpt CatPhotoTool) getImgURL(url string) (string, error) {
 
 	fmt.Println(cpt.getKey())
-	url := "https://api.thecatapi.com/v1/images/search?mime_types=jpg,png"
+	//^^need to remove hard link so that we use the img ur
+	/*	url := "https://api.thecatapi.com/v1/images/search?size=small&breed_id=2"
+
+		req, _ := http.NewRequest("GET", url, nil)
+
+		req.Header.Add("x-api-key", "DEMO-API-KEY")
+
+		res, _ := http.DefaultClient.Do(req)
+
+		defer res.Body.Close()
+		body, _ := ioutil.ReadAll(res.Body)*/
+
 	response, _ := http.Get(url) //later query specifically for the url??
 	body := response.Body
 	bodyBytes := make([]byte, 0) //The slices to hold all of the body once we buffer it in

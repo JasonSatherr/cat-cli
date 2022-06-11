@@ -1,7 +1,7 @@
 package photoTools
 
 type RandomPhotoToolInterface interface {
-	GenerateImage()
+	GenerateImageFromUrlEndpoint(url string)
 	GetExtraMessage()
 }
 
