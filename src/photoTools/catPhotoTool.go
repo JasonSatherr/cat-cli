@@ -20,6 +20,7 @@ type CatPhotoTool struct {
 //just move some of this logic out to something that all the classes of the interface can share?
 func (cpt CatPhotoTool) GenerateImageFromUrlEndpoint(url string) (image.Image, error) {
 	//existingImageFile, err := os.Open("./pics/cat.jpg") //get the cat pic
+	cpt.printSnap()
 	randomCatPicURL, err := cpt.getImgURL(url)
 	if err != nil {
 		return nil, nil
@@ -43,47 +44,17 @@ func (cpt CatPhotoTool) GenerateImageFromUrlEndpoint(url string) (image.Image, e
 		return nil, err
 	}
 
-	// fmt.Println(imageData)
-	// fmt.Println(imageType)
 	return imageData, nil
 }
 
 func (cpt CatPhotoTool) getImgURL(url string) (string, error) {
 
-	fmt.Println(cpt.getKey())
-	//^^need to remove hard link so that we use the img ur
-	/*	url := "https://api.thecatapi.com/v1/images/search?size=small&breed_id=2"
+	fmt.Println(cpt.getKey()) //get's the key for our API... atm we are just using the demo key :)
 
-		req, _ := http.NewRequest("GET", url, nil)
+	req, _ := http.NewRequest("GET", url, nil) //prepare the http rq
 
-		req.Header.Add("x-api-key", "DEMO-API-KEY")
-
-		res, _ := http.DefaultClient.Do(req)
-
-		defer res.Body.Close()
-		body, _ := ioutil.ReadAll(res.Body)*/
-
-	// response, _ := http.Get(url) //later query specifically for the url??
-	// body := response.Body
-	// bodyBytes := make([]byte, 0) //The slices to hold all of the body once we buffer it in
-	// bodyByteBufferSize := 1024
-	// bodyByteBuffer := make([]byte, bodyByteBufferSize) //the buffer to slowly consume the response body
-	// var numRead int = bodyByteBufferSize
-
-	// for numRead != 0 { //while there is still data to read...
-	// 	read, err := body.Read(bodyByteBuffer)
-	// 	numRead = read
-	// 	//process duh data
-	// 	bodyBytes = append(bodyBytes, bodyByteBuffer[:numRead]...) //bodybytes += bodybytes += buffer
-
-	// 	if err != nil { //print the errors we run into... EOF is largely expected, but others may be present
-	// 		fmt.Print(err)
-	// 	}
-	// }
-	req, _ := http.NewRequest("GET", url, nil)
-
-	req.Header.Add("x-api-key", "DEMO-API-KEY")
-	res, _ := http.DefaultClient.Do(req)
+	req.Header.Add("x-api-key", "DEMO-API-KEY") //add headers
+	res, _ := http.DefaultClient.Do(req)        //send out and catch the request
 	fmt.Print(url)
 	defer res.Body.Close()
 	bodyBytes, _ := ioutil.ReadAll(res.Body)
@@ -93,8 +64,11 @@ func (cpt CatPhotoTool) getImgURL(url string) (string, error) {
 	//get data out of bytes arr and parse it to the form of an array of interfaces
 	json.Unmarshal(bodyBytes, &jsonData)
 
+	//if //we error if we cannot access jsonData[0]
+	//we should access the api once more...
+
 	//because we know the form of the json, we are able to get the image url out of it :)
-	if mapData, ok := jsonData[0].(map[string]interface{}); ok {
+	if mapData, ok := jsonData[0].(map[string]interface{}); ok { //we error if we cannot access jsonData[0]
 		if stringToReturn, ok := mapData["url"].(string); ok {
 			return stringToReturn, nil
 		}
@@ -145,19 +119,6 @@ func getByteArrFromFile(file *os.File) []byte {
 
 	return byteBuf.Bytes()
 }
-
-// func readFileToByteArr(file *os.File, arr []byte) (int32, error){
-// 	cumRead := 0
-// 	stepSize := 1024
-// 	readInStep := 1
-
-// 	for readInStep > 0{
-// 		file.Read(arr)
-
-// 	}
-
-// 	return 0, nil
-// }
 
 func (cpt CatPhotoTool) getExPath() string {
 	ex, err := os.Executable()

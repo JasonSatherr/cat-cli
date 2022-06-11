@@ -36,12 +36,12 @@ func imageGrabberHandler(breedId string, animalId string, url string) image.Imag
 }
 func determineURL(breedId string, animalId string) string {
 	if animalId == "cat" {
-		url := "https://api.thecatapi.com/v1/images/search?format=jpg,png"
+		url := "https://api.thecatapi.com/v1/images/search?mime_types=jpg,png"
 		if breedId != "" {
 			url = url + "&breed_id=" + breedId
 		}
 		//url := "https://api.thecatapi.com/v1/images/search?breed_id=bali"
-		url += "&breed_id=" + breedId
+		//url += "&breed_id=" + breedId
 		return url
 	}
 
