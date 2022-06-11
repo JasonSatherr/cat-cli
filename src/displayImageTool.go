@@ -2,7 +2,6 @@ package src
 
 import (
 	"image"
-	"strconv"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
@@ -10,7 +9,7 @@ import (
 	"github.com/JasonSatherr/cat-cli/src/photoTools"
 )
 
-func DisplayCmdHandler(breedId int, animalId string) {
+func DisplayCmdHandler(breedId string, animalId string) {
 	//determine the url to pull from
 	url := determineURL(breedId, animalId)
 	//get the image
@@ -21,7 +20,7 @@ func DisplayCmdHandler(breedId int, animalId string) {
 	//display the image with DisplayRandImage()
 	displayRandImage(img)
 }
-func imageGrabberHandler(breedId int, animalId string, url string) image.Image {
+func imageGrabberHandler(breedId string, animalId string, url string) image.Image {
 	var img image.Image
 	var err error
 	if animalId == "cat" {
@@ -35,14 +34,18 @@ func imageGrabberHandler(breedId int, animalId string, url string) image.Image {
 	}
 	return img
 }
-func determineURL(breedId int, animalId string) string {
+func determineURL(breedId string, animalId string) string {
 	if animalId == "cat" {
-		url := "https://api.thecatapi.com/v1/images/search?mime_types=jpg,png"
-		if breedId <= 60 && breedId >= 0 {
-			url += "/&breed_id=" + strconv.Itoa(breedId)
+		url := "https://api.thecatapi.com/v1/images/search?format=jpg,png"
+		if breedId != "" {
+			url = url + "&breed_id=" + breedId
 		}
+		//url := "https://api.thecatapi.com/v1/images/search?breed_id=bali"
+		url += "&breed_id=" + breedId
 		return url
 	}
+
+	//move into animal photo tools
 	return "https://api.thecatapi.com/v1/images"
 }
 

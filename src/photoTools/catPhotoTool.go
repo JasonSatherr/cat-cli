@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"image"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -62,23 +63,30 @@ func (cpt CatPhotoTool) getImgURL(url string) (string, error) {
 		defer res.Body.Close()
 		body, _ := ioutil.ReadAll(res.Body)*/
 
-	response, _ := http.Get(url) //later query specifically for the url??
-	body := response.Body
-	bodyBytes := make([]byte, 0) //The slices to hold all of the body once we buffer it in
-	bodyByteBufferSize := 1024
-	bodyByteBuffer := make([]byte, bodyByteBufferSize) //the buffer to slowly consume the response body
-	var numRead int = bodyByteBufferSize
+	// response, _ := http.Get(url) //later query specifically for the url??
+	// body := response.Body
+	// bodyBytes := make([]byte, 0) //The slices to hold all of the body once we buffer it in
+	// bodyByteBufferSize := 1024
+	// bodyByteBuffer := make([]byte, bodyByteBufferSize) //the buffer to slowly consume the response body
+	// var numRead int = bodyByteBufferSize
 
-	for numRead != 0 { //while there is still data to read...
-		read, err := body.Read(bodyByteBuffer)
-		numRead = read
-		//process duh data
-		bodyBytes = append(bodyBytes, bodyByteBuffer[:numRead]...) //bodybytes += bodybytes += buffer
+	// for numRead != 0 { //while there is still data to read...
+	// 	read, err := body.Read(bodyByteBuffer)
+	// 	numRead = read
+	// 	//process duh data
+	// 	bodyBytes = append(bodyBytes, bodyByteBuffer[:numRead]...) //bodybytes += bodybytes += buffer
 
-		if err != nil { //print the errors we run into... EOF is largely expected, but others may be present
-			fmt.Print(err)
-		}
-	}
+	// 	if err != nil { //print the errors we run into... EOF is largely expected, but others may be present
+	// 		fmt.Print(err)
+	// 	}
+	// }
+	req, _ := http.NewRequest("GET", url, nil)
+
+	req.Header.Add("x-api-key", "DEMO-API-KEY")
+	res, _ := http.DefaultClient.Do(req)
+	fmt.Print(url)
+	defer res.Body.Close()
+	bodyBytes, _ := ioutil.ReadAll(res.Body)
 
 	var jsonData []interface{}
 

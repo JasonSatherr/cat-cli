@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	breedId  int    = -1
+	breedId  string = ""
 	animalId string = "cat"
 )
 
@@ -33,10 +33,10 @@ func init() {
 
 	// Here you will define your flags and configuration settings.
 
-	breedHelpMessage := "a number less than 60 denoting breed ID of cat"
+	breedHelpMessage := "the breed of the cat (string)"
 	//Todo: find a way to let this flag only apply to cats///
 	//^^TODO, FIND ADAPTIBLE NUMBER OF BREEDS
-	displayCmd.Flags().IntVarP(&breedId, "breedID", "b", -1, breedHelpMessage)
+	displayCmd.Flags().StringVarP(&breedId, "breedID", "b", "", breedHelpMessage)
 	displayCmd.Flags().StringVarP(&animalId, "animalID", "a", "cat", "the animal to display.  'cat' is supported atm 'dog' is soon to come :)")
 
 }
