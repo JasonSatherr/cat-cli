@@ -1,6 +1,7 @@
 package photoTools
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -8,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"reflect"
 )
 
 type CatPhotoTool struct {
@@ -48,7 +50,7 @@ func (cpt CatPhotoTool) GenerateImage() (image.Image, error) {
 
 func (cpt CatPhotoTool) getImgURL() (string, error) {
 
-	cpt.getKey()
+	fmt.Println(cpt.getKey())
 	url := "https://api.thecatapi.com/v1/images/search?mime_types=jpg,png"
 	response, _ := http.Get(url) //later query specifically for the url??
 	body := response.Body
@@ -82,9 +84,9 @@ func (cpt CatPhotoTool) getImgURL() (string, error) {
 	return "ERROR", errors.New("failed to get the image url :(")
 }
 
-func (cpt CatPhotoTool) getKey() {
+func (cpt CatPhotoTool) getKey() string {
 	exPath := cpt.getExPath()
-	configFileName := exPath + "\\configuration\\secret_config.json"
+	configFileName := exPath + "\\configuration\\SAMPLE_CONFIG.json"
 	//^^IMPORTANT MAKE SURE THAT IT WORKS ON LINUX/MAC TOO NOT JUST WINDOWS
 	//^^THIS WAY OF CONCATING TO FILE PATH IS BAD BC OS USE DIFFERENT SYMBOLS TO SEPARATE
 
@@ -93,8 +95,53 @@ func (cpt CatPhotoTool) getKey() {
 	if err != nil {
 		panic(err)
 	}
+	byteArr := getByteArrFromFile(jsonFile)
 
+	var jsonData map[string]interface{}
+
+	err = json.Unmarshal(byteArr, &jsonData)
+
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(reflect.TypeOf(jsonData["keys"]))
+	keysJson, ok := jsonData["keys"].(map[string]interface{})
+	if !ok {
+		panic(ok)
+	}
+
+	theKey := keysJson["cat-api"].(string)
+
+	return theKey
 }
+
+func getByteArrFromFile(file *os.File) []byte {
+	var byteBuf bytes.Buffer
+	lenRead, err := byteBuf.ReadFrom(file)
+
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("we read %d bytes", lenRead)
+
+	return byteBuf.Bytes()
+}
+
+// func readFileToByteArr(file *os.File, arr []byte) (int32, error){
+// 	cumRead := 0
+// 	stepSize := 1024
+// 	readInStep := 1
+
+// 	for readInStep > 0{
+// 		file.Read(arr)
+
+// 	}
+
+// 	return 0, nil
+// }
+
 func (cpt CatPhotoTool) getExPath() string {
 	ex, err := os.Executable()
 	if err != nil {
