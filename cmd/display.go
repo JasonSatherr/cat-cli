@@ -11,6 +11,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	breedId  int    = -1
+	animalId string = "cat"
+)
+
 // displayCmd represents the display command
 var displayCmd = &cobra.Command{
 	Use:   "display",
@@ -18,7 +23,8 @@ var displayCmd = &cobra.Command{
 	Long: `This command will query the internet for a random picture.
 	atm, you need to close the image before you can move on`,
 	Run: func(cmd *cobra.Command, args []string) {
-		src.DisplayRandImage()
+		src.DisplayCmdHandler(breedId, animalId)
+		//src.DisplayRandImage()
 	},
 }
 
@@ -27,11 +33,10 @@ func init() {
 
 	// Here you will define your flags and configuration settings.
 
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// displayCmd.PersistentFlags().String("foo", "", "A help for foo")
+	breedHelpMessage := "a number less than 60 denoting breed ID of cat"
+	//Todo: find a way to let this flag only apply to cats///
+	//^^TODO, FIND ADAPTIBLE NUMBER OF BREEDS
+	displayCmd.Flags().IntVarP(&breedId, "breedID", "b", -1, breedHelpMessage)
+	displayCmd.Flags().StringVarP(&animalId, "animalID", "a", "cat", "the animal to display.  'cat' is supported atm 'dog' is soon to come :)")
 
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// displayCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

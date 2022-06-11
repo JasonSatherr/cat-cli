@@ -9,7 +9,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"reflect"
 )
 
 type CatPhotoTool struct {
@@ -86,7 +85,7 @@ func (cpt CatPhotoTool) getImgURL() (string, error) {
 
 func (cpt CatPhotoTool) getKey() string {
 	exPath := cpt.getExPath()
-	configFileName := exPath + "\\configuration\\SAMPLE_CONFIG.json"
+	configFileName := exPath + "\\configuration\\secret_config.json"
 	//^^IMPORTANT MAKE SURE THAT IT WORKS ON LINUX/MAC TOO NOT JUST WINDOWS
 	//^^THIS WAY OF CONCATING TO FILE PATH IS BAD BC OS USE DIFFERENT SYMBOLS TO SEPARATE
 
@@ -99,19 +98,18 @@ func (cpt CatPhotoTool) getKey() string {
 
 	var jsonData map[string]interface{}
 
-	err = json.Unmarshal(byteArr, &jsonData)
+	err = json.Unmarshal(byteArr, &jsonData) //populat jsonData
 
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println(reflect.TypeOf(jsonData["keys"]))
-	keysJson, ok := jsonData["keys"].(map[string]interface{})
+	keysJson, ok := jsonData["keys"].(map[string]interface{}) //dive further into the json jsonData["keys"]...
 	if !ok {
 		panic(ok)
 	}
 
-	theKey := keysJson["cat-api"].(string)
+	theKey := keysJson["cat-api"].(string) //make the value here equal to a string...
 
 	return theKey
 }
