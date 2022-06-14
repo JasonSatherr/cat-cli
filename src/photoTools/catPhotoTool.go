@@ -19,33 +19,34 @@ type CatPhotoTool struct {
 }
 
 //just move some of this logic out to something that all the classes of the interface can share?
-func (cpt CatPhotoTool) GenerateImageFromUrlEndpoint(url string) (image.Image, error) {
+//I also think that this method as a whole should be split up... url -> byte[]  then byte [] -> image, err
+func (cpt CatPhotoTool) GenerateImageFromUrlEndpoint(url string) (image.Image, string, error) {
 	//existingImageFile, err := os.Open("./pics/cat.jpg") //get the cat pic
-	cpt.printSnap()
+	//cpt.printSnap()
 	randomCatPicURL, err := cpt.getImgURL(url)
 	if err != nil {
-		return nil, nil
+		panic(err)
 	}
 	existingImageFile, err := http.Get(randomCatPicURL)
 	//https://cdn2.thecatapi.com/images/9fm.jpg
 	if err != nil {
 		//Bad because we do not unpack the err (*PathError)
 		//which contains more information
-		return nil, err
+		panic(err)
 	}
 
 	defer existingImageFile.Body.Close()
 
 	// Calling the generic image.Decode() will tell give us the data
 	// and type of image it is as a string. We expect "jpg"
-	imageData, _, err := image.Decode(existingImageFile.Body)
+	imageData, typeData, err := image.Decode(existingImageFile.Body)
 
 	if err != nil {
 		// most likely more we can decode... maybe just pass err back instead of error?
-		return nil, err
+		panic(err)
 	}
 
-	return imageData, nil
+	return imageData, typeData, nil
 }
 
 func (cpt CatPhotoTool) getImgURL(url string) (string, error) {
@@ -108,6 +109,7 @@ func (cpt CatPhotoTool) getKey() string {
 	return theKey
 }
 
+//move this up a level... perhaps to randomImage.go? idk
 func getByteArrFromFile(file *os.File) []byte {
 	var byteBuf bytes.Buffer
 	lenRead, err := byteBuf.ReadFrom(file)

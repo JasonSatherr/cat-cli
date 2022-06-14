@@ -7,7 +7,11 @@ package cmd
 import (
 	"fmt"
 
-	//"github.com/JasonSatherr/cat-cli/src"
+	"errors"
+
+	"github.com/JasonSatherr/cat-cli/src"
+	"github.com/JasonSatherr/cat-cli/src/fileTools"
+	"github.com/JasonSatherr/cat-cli/src/photoTools"
 	"github.com/spf13/cobra"
 )
 
@@ -21,8 +25,21 @@ var downloadCmd = &cobra.Command{
 	Short: "downloads an image randomly fetched from the internet",
 	Long: `This command will query the internet for a random picture.
 	and then by default download it into the current directory`,
+	Args: func(cmd *cobra.Command, args []string) error {
+		if len(args) != 1 {
+			return errors.New("requires only 1 file name")
+		}
+		return nil
+	},
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("Sorry, Jason has not yet implemented the download feature")
+		fmt.Printf("Sorry, Jason is trying to implement the download feature")
+		cpt := photoTools.CatPhotoTool{}
+		url := src.DetermineURL("", "cat")
+		image, format, err := cpt.GenerateImageFromUrlEndpoint(url)
+		if err != nil {
+			panic(err)
+		}
+		fileTools.SaveImageToFile(args[0]+"."+format, image, format)
 	},
 }
 

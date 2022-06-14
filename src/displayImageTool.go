@@ -11,7 +11,7 @@ import (
 
 func DisplayCmdHandler(breedId string, animalId string) {
 	//determine the url to pull from
-	url := determineURL(breedId, animalId)
+	url := DetermineURL(breedId, animalId)
 	//get the image
 	img := imageGrabberHandler(breedId, animalId, url)
 
@@ -25,7 +25,7 @@ func imageGrabberHandler(breedId string, animalId string, url string) image.Imag
 	var err error
 	if animalId == "cat" {
 		catGenerator := photoTools.CatPhotoTool{}
-		img, err = catGenerator.GenerateImageFromUrlEndpoint(url)
+		img, _, err = catGenerator.GenerateImageFromUrlEndpoint(url)
 
 	}
 
@@ -34,7 +34,7 @@ func imageGrabberHandler(breedId string, animalId string, url string) image.Imag
 	}
 	return img
 }
-func determineURL(breedId string, animalId string) string {
+func DetermineURL(breedId string, animalId string) string {
 	if animalId == "cat" {
 		url := "https://api.thecatapi.com/v1/images/search?mime_types=jpg,png"
 		if breedId != "" {
