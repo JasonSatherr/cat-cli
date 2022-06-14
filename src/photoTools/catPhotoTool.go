@@ -9,7 +9,8 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
-	"path/filepath"
+
+	"github.com/JasonSatherr/cat-cli/src/fileTools"
 )
 
 type CatPhotoTool struct {
@@ -77,7 +78,7 @@ func (cpt CatPhotoTool) getImgURL(url string) (string, error) {
 }
 
 func (cpt CatPhotoTool) getKey() string {
-	exPath := cpt.getExPath()
+	exPath := fileTools.GetExecutionPath()
 	configFileName := exPath + "\\configuration\\secret_config.json"
 	//^^IMPORTANT MAKE SURE THAT IT WORKS ON LINUX/MAC TOO NOT JUST WINDOWS
 	//^^THIS WAY OF CONCATING TO FILE PATH IS BAD BC OS USE DIFFERENT SYMBOLS TO SEPARATE
@@ -120,14 +121,6 @@ func getByteArrFromFile(file *os.File) []byte {
 	return byteBuf.Bytes()
 }
 
-func (cpt CatPhotoTool) getExPath() string {
-	ex, err := os.Executable()
-	if err != nil {
-		panic(err)
-	}
-	exPath := filepath.Dir(ex)
-	return exPath
-}
 func (cpt CatPhotoTool) GetExtraMessage() string {
 	return "meowww"
 }
