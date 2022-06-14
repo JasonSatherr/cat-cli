@@ -1,3 +1,4 @@
 topSecret/
 configuration/*
 !configuration/SAMPLE_CONFIG.json
+pics/*
