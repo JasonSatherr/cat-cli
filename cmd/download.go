@@ -11,6 +11,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	fileName = "cat"
+)
+
 // displayCmd represents the display command
 var downloadCmd = &cobra.Command{
 	Use:   "download",
@@ -25,13 +29,9 @@ var downloadCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(downloadCmd)
 
-	// Here you will define your flags and configuration settings.
+	//here, we should make sure that the noun is the filename
 
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// displayCmd.PersistentFlags().String("foo", "", "A help for foo")
+	//and then make sure that the flags
 
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
 	// displayCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
